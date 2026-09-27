@@ -46,7 +46,7 @@ Internalise those five and TypeScript stops surprising you.
 
 ## The project
 
-You'll build the **shared type layer and API client for Ledger Console** — the typed contract between the Ledger API (from the [API track](../API/README.md)) and the React dashboard (the [React track](../React/README.md)).
+You'll build the **shared type layer and API client for Ledger Console** — the typed contract between the Ledger API (from the [API track](https://github.com/Pawar-Pratik/API-mastery.git)) and the React dashboard (the [React track](../React/README.md)).
 
 That means: branded ID types the compiler can't confuse, a `Money` type that can't be added across currencies, a `Result` type that forces error handling, a discriminated union for every API state, a runtime-validated boundary with inferred types, and a fully-typed fetch client generated from OpenAPI.
 
