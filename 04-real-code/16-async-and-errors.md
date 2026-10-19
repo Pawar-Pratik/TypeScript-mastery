@@ -194,7 +194,7 @@ type ChargeError =
   | { code: "processor_unavailable"; retryable: true; cause: unknown }
   | { code: "rate_limited"; retryAfterSec: number; retryable: true };
 ```
-Now `assertNever` forces the HTTP layer to handle every case, and `retryable` — the column from [API Lesson 10](../../API/02-rest-design/10-errors-and-problem-details.md)'s error table — is **in the type**, so a caller cannot forget to branch on it.
+Now `assertNever` forces the HTTP layer to handle every case, and `retryable` — the column from [API Lesson 10](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/10-errors-and-problem-details.md)'s error table — is **in the type**, so a caller cannot forget to branch on it.
 
 ---
 
@@ -255,7 +255,7 @@ export async function mapLimit<T, R>(
 }
 ```
 
-**`AbortSignal` is the piece most people skip and shouldn't.** It's how you cancel a `fetch`, and it's what React's effect cleanup gives you to prevent race conditions ([React Lesson 08](../../React/README.md)). `AbortSignal.timeout()` and `AbortSignal.any()` mean you rarely need to wire one by hand any more.
+**`AbortSignal` is the piece most people skip and shouldn't.** It's how you cancel a `fetch`, and it's what React's effect cleanup gives you to prevent race conditions ([React Lesson 08](https://github.com/Pawar-Pratik/React-mastery)). `AbortSignal.timeout()` and `AbortSignal.any()` mean you rarely need to wire one by hand any more.
 
 ```ts
 // The idiomatic cancellable fetch
@@ -362,7 +362,7 @@ for await (const payment of paginate(c => api.listPayments({ cursor: c }))) {
   await writeRow(payment);
 }
 ```
-`AsyncGenerator<Yield, Return, Next>` — the three parameters trip people up; you almost always only care about the first. This pattern is the client-side counterpart of [API Lesson 08](../../API/02-rest-design/08-collections-and-pagination.md)'s cursor pagination: the caller writes an ordinary `for await` loop and never touches a cursor.
+`AsyncGenerator<Yield, Return, Next>` — the three parameters trip people up; you almost always only care about the first. This pattern is the client-side counterpart of [API Lesson 08](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/08-collections-and-pagination.md)'s cursor pagination: the caller writes an ordinary `for await` loop and never touches a cursor.
 
 ---
 

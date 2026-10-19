@@ -247,7 +247,7 @@ function label(s: Status): string {
   }
 }
 ```
-**Add `"refunded"` to `Status` and this file fails to compile**, pointing at the exact place you forgot. That's the type system doing real work — and it's the direct answer to the "adding an enum value is a breaking change" problem from [API Lesson 11](../../API/02-rest-design/11-versioning-and-evolution.md).
+**Add `"refunded"` to `Status` and this file fails to compile**, pointing at the exact place you forgot. That's the type system doing real work — and it's the direct answer to the "adding an enum value is a breaking change" problem from [API Lesson 11](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/11-versioning-and-evolution.md).
 
 ```ts
 // 3. Impossible states
@@ -291,7 +291,7 @@ useEffect(() => fetchData(), []);
 
 useEffect(() => { void fetchData(); }, []);   // ✅ braces discard the return
 ```
-You'll meet this again in [React Lesson 08](../../React/README.md). The `void` operator (`void expr`) is the idiomatic way to say "I'm deliberately discarding this."
+You'll meet this again in [React Lesson 08](https://github.com/Pawar-Pratik/React-mastery). The `void` operator (`void expr`) is the idiomatic way to say "I'm deliberately discarding this."
 
 ---
 
@@ -303,7 +303,7 @@ let b: string | null;         // "explicitly empty"
 ```
 
 JavaScript has two nullish values, which is one too many. Conventions that work:
-- **`undefined` for absence, `null` for explicit emptiness.** This matches JSON (`undefined` disappears in `JSON.stringify`, `null` survives) and matches PATCH semantics: absent = unchanged, `null` = clear ([API L09](../../API/02-rest-design/09-writes-patch-and-bulk.md)).
+- **`undefined` for absence, `null` for explicit emptiness.** This matches JSON (`undefined` disappears in `JSON.stringify`, `null` survives) and matches PATCH semantics: absent = unchanged, `null` = clear ([API L09](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/09-writes-patch-and-bulk.md)).
 - **`undefined` only, internally** — simpler, and what most codebases converge on. Use `?.` and `??` throughout.
 
 **What matters is picking one and being consistent.** And note `?? ` vs `||`:

@@ -289,7 +289,7 @@ export type Serialized<T> =
   : T;
 ```
 
-**That last one is a genuinely valuable pattern:** your domain model uses `Date` and branded types; the wire format uses ISO strings and plain objects. `Serialized<T>` derives the wire type from the domain type, so they can't drift — which is the type-level version of [API Lesson 11](../../API/02-rest-design/11-versioning-and-evolution.md)'s "one source of truth."
+**That last one is a genuinely valuable pattern:** your domain model uses `Date` and branded types; the wire format uses ISO strings and plain objects. `Serialized<T>` derives the wire type from the domain type, so they can't drift — which is the type-level version of [API Lesson 11](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/11-versioning-and-evolution.md)'s "one source of truth."
 
 ---
 
@@ -343,7 +343,7 @@ A recursive mapped type producing `K | \`${K}.${Paths<T[K]>}\``, plus a `PathVal
 Combinatorial explosion. Each union input multiplies, and the checker errors with "union type that is too complex to represent" — and before that, it just gets slow. Keep the cross product small, or use `string` with a runtime check.
 
 **Q9. "How do you derive your API input types from your entity types?"**
-`Omit` the server-owned fields: `type CreateInput<T> = Omit<T, "id"|"createdAt"|"status">`, and `UpdateInput<T> = Partial<CreateInput<T>>`. Then adding a field to the entity automatically updates both — and, importantly, the server-owned fields are structurally unable to appear in an input, which is the mass-assignment defence from [API Lesson 09](../../API/02-rest-design/09-writes-patch-and-bulk.md) expressed in types.
+`Omit` the server-owned fields: `type CreateInput<T> = Omit<T, "id"|"createdAt"|"status">`, and `UpdateInput<T> = Partial<CreateInput<T>>`. Then adding a field to the entity automatically updates both — and, importantly, the server-owned fields are structurally unable to appear in an input, which is the mass-assignment defence from [API Lesson 09](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/09-writes-patch-and-bulk.md) expressed in types.
 
 ---
 

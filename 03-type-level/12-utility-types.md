@@ -325,7 +325,7 @@ It works because two generic signatures are only mutually assignable if their de
 Recursive mapped type — **and immediately name the trap**: you must exclude `Date`, `Map`, `Set`, `RegExp` and functions, or they get mapped into `{}`-shaped nonsense. Then say you'd probably use `type-fest`'s `PartialDeep` rather than maintain it.
 
 **Q6. "How do you type an enum from an API that might gain new values?"**
-`LiteralUnion<"a" | "b", string>`, implemented as `"a" | "b" | (string & {})`. Known values autocomplete; unknown values still parse. The `& {}` prevents the literals being absorbed into `string`. **This is the client-side answer to open enums** ([API L11](../../API/02-rest-design/11-versioning-and-evolution.md)) — pair it with an exhaustive switch that has a `default`.
+`LiteralUnion<"a" | "b", string>`, implemented as `"a" | "b" | (string & {})`. Known values autocomplete; unknown values still parse. The `& {}` prevents the literals being absorbed into `string`. **This is the client-side answer to open enums** ([API L11](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/11-versioning-and-evolution.md)) — pair it with an exhaustive switch that has a `default`.
 
 **Q7. "How do you test types?"**
 `.test-d.ts` files with `Equal`/`Expect`, or `expect-type`/`tsd`. Plus `@ts-expect-error` as a *positive* assertion that something must fail to compile — which is the only way to prevent a type design silently loosening.

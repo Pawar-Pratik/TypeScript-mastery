@@ -151,7 +151,7 @@ Does the type parameter appear twice? Is there more than one call site? Would a 
 Both, at different places. Types inside the boundary, validation at it. **Never validate between your own internal functions** — inside the boundary the compiler's guarantees hold and re-checking is noise that implies you don't trust your own types.
 
 ### "How do we handle an API that might change?"
-Open enums with `LiteralUnion`, tolerant response parsing (strip unknowns), exhaustive switches with a `default` branch, and schema-derived types so a contract change is a compile error rather than a production one. That's [API Lesson 11](../../API/02-rest-design/11-versioning-and-evolution.md) and [Lesson 15](../04-real-code/15-the-boundary-and-parsing.md) combined.
+Open enums with `LiteralUnion`, tolerant response parsing (strip unknowns), exhaustive switches with a `default` branch, and schema-derived types so a contract change is a compile error rather than a production one. That's [API Lesson 11](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/11-versioning-and-evolution.md) and [Lesson 15](../04-real-code/15-the-boundary-and-parsing.md) combined.
 
 ### "When do we reach for a library?"
 Schema validation: always (Zod/Valibot). Utility types: `type-fest` for deep/recursive ones. State management: when prop drilling hurts. **Type-level gymnastics: when you can't enumerate the edge cases yourself.**
@@ -186,7 +186,7 @@ Push back with the specific cost: it's the flag that catches the most common run
 A teaching moment, not a rejection. Explain that it's `as` in disguise — the caller invents `T`, nothing validates it, and the error surfaces far from the fetch. Show the schema version. **This is the most common TypeScript misconception**, and it looks like good practice, which is exactly why it needs explaining rather than flagging.
 
 **"Should we adopt tRPC / GraphQL codegen / OpenAPI codegen?"**
-Depends on who owns the contract. Same repo, TS both ends, shipped together → tRPC. External consumers or a published API → OpenAPI as the source of truth, generate both sides. GraphQL → its codegen is mature and worth it. **The principle: one contract, both sides generated, so drift becomes a compile error** ([API Lesson 25](../../API/06-craft/25-openapi-contract-first.md)).
+Depends on who owns the contract. Same repo, TS both ends, shipped together → tRPC. External consumers or a published API → OpenAPI as the source of truth, generate both sides. GraphQL → its codegen is mature and worth it. **The principle: one contract, both sides generated, so drift becomes a compile error** ([API Lesson 25](https://github.com/Pawar-Pratik/API-mastery/blob/main/06-craft/25-openapi-contract-first.md)).
 
 ---
 
@@ -285,6 +285,6 @@ fetch responses · JSON.parse · localStorage · process.env · URL params · fo
 3. **Tier 1 and 2 type challenges** until Tier 1 is under two minutes each.
 4. **Turn on `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes`** in a real project and fix the fallout. That fallout is the lesson.
 
-Then → **[React: Lesson 01](../../React/README.md)**
+Then → **[React: Lesson 01](https://github.com/Pawar-Pratik/React-mastery)**
 
 > The React track assumes everything here. Components are typed APIs, state is a discriminated union, server data is parsed at the boundary, and every `switch` is exhaustive. You've already built the hard half.

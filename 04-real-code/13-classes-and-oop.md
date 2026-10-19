@@ -66,7 +66,7 @@ console.log(JSON.stringify(new B()));       // {}        ← genuinely hidden
 console.log((new B() as any).x);            // undefined
 ```
 
-**The rule:** use `#` for anything that must *actually* stay hidden — secrets, tokens, internal handles you don't want serialized. Use `private` for ordinary encapsulation where compile-time is enough. **And never rely on `private` to keep a secret out of a JSON response** — that's the API track's excessive-data-exposure bug ([API L16](../../API/03-security/16-owasp-and-hardening.md)) wearing a TypeScript costume.
+**The rule:** use `#` for anything that must *actually* stay hidden — secrets, tokens, internal handles you don't want serialized. Use `private` for ordinary encapsulation where compile-time is enough. **And never rely on `private` to keep a secret out of a JSON response** — that's the API track's excessive-data-exposure bug ([API L16](https://github.com/Pawar-Pratik/API-mastery/blob/main/03-security/16-owasp-and-hardening.md)) wearing a TypeScript costume.
 
 ### `abstract`, `implements`, `override`
 
@@ -295,7 +295,7 @@ type Payment = { id: PaymentId; money: Money } & Timestamps;
 | `Emitter<EventMap>` | **Yes** | Stateful, with subscription lifecycle |
 | `DatabasePool`, `RedisClient` | **Yes** (from libraries) | Resource handles |
 | `PaymentService` | **No** | Stateless — a module of functions taking a `ctx` |
-| `PaymentRepo` | **No** | A closure factory bound to a tenant ([API L15](../../API/03-security/15-authorization-and-multitenancy.md)) |
+| `PaymentRepo` | **No** | A closure factory bound to a tenant ([API L15](https://github.com/Pawar-Pratik/API-mastery/blob/main/03-security/15-authorization-and-multitenancy.md)) |
 | `Payment`, `Money`, `Customer` | **No** | Plain types; they cross the wire |
 | `Validator` | **No** | A Zod schema and a function ([Lesson 15](15-the-boundary-and-parsing.md)) |
 
@@ -336,7 +336,7 @@ export class ConflictError extends ApiError {
   }
 }
 ```
-Note `toProblem` — the class knows how to serialize itself into the RFC 9457 shape from [API Lesson 10](../../API/02-rest-design/10-errors-and-problem-details.md). That's behaviour genuinely travelling with state, which is the test for whether a class is warranted.
+Note `toProblem` — the class knows how to serialize itself into the RFC 9457 shape from [API Lesson 10](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/10-errors-and-problem-details.md). That's behaviour genuinely travelling with state, which is the test for whether a class is warranted.
 
 ---
 
@@ -401,7 +401,7 @@ export function toProblemResponse(err: unknown, requestId: string) {
                                  detail: "An unexpected error occurred" } };
 }
 ```
-Note it mirrors [API Lesson 10](../../API/02-rest-design/10-errors-and-problem-details.md) exactly — same design, now type-safe.
+Note it mirrors [API Lesson 10](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/10-errors-and-problem-details.md) exactly — same design, now type-safe.
 
 ### Build — the same service two ways
 Implement a `PaymentService` as (a) a class with injected dependencies and (b) a module of functions taking a `ctx`. Then compare:

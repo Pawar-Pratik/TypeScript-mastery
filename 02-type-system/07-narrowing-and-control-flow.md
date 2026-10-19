@@ -181,7 +181,7 @@ type BadResult<T> = {
 //    exactly the data it needs — no more, no less.
 ```
 
-**Illegal states become unrepresentable**, not merely unlikely. This is the central idea of [Lesson 09](../03-type-level/09-illegal-states-unrepresentable.md), and it maps directly onto the state machines from [API Lesson 09](../../API/02-rest-design/09-writes-patch-and-bulk.md) — the API enforces transitions in SQL; the client enforces state shapes in types.
+**Illegal states become unrepresentable**, not merely unlikely. This is the central idea of [Lesson 09](../03-type-level/09-illegal-states-unrepresentable.md), and it maps directly onto the state machines from [API Lesson 09](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/09-writes-patch-and-bulk.md) — the API enforces transitions in SQL; the client enforces state shapes in types.
 
 ### Rules for good discriminants
 ```ts
