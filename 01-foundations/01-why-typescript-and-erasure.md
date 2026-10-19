@@ -151,7 +151,7 @@ function fetchWithRetry(url, opts) { }
 // A signature that cannot lie:
 function fetchWithRetry(url: string, opts: { retries?: number; timeoutMs?: number }): Promise<Response>
 ```
-That's exactly the layer-1 contract idea from [API Lesson 01](../../API/01-foundations/01-what-an-api-really-is.md) — and note the same limitation applies: the type says `timeoutMs: number`, but only prose can say *"milliseconds, default 5000, must be under the gateway's 25s."* **Types capture syntax; semantics still need words.**
+That's exactly the layer-1 contract idea from [API Lesson 01](https://github.com/Pawar-Pratik/API-mastery/blob/main/01-foundations/01-what-an-api-really-is.md) — and note the same limitation applies: the type says `timeoutMs: number`, but only prose can say *"milliseconds, default 5000, must be under the gateway's 25s."* **Types capture syntax; semantics still need words.**
 
 ### And what it costs — be honest about this
 

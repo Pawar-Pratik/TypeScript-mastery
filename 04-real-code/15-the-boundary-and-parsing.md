@@ -144,7 +144,7 @@ z.object({ ... })                 // strips unknown keys (the default)
 z.object({ ... }).strict()        // ERRORS on unknown keys  ← for REQUESTS you receive
 z.object({ ... }).passthrough()   // keeps unknown keys
 ```
-**Requests you receive: `.strict()`** — a typo'd field must be an error ([API L11](../../API/02-rest-design/11-versioning-and-evolution.md)). **Responses you consume: the default strip** — you must be a tolerant reader, or the server can never add a field. That asymmetry is exactly the API-track rule, now enforced in code.
+**Requests you receive: `.strict()`** — a typo'd field must be an error ([API L11](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/11-versioning-and-evolution.md)). **Responses you consume: the default strip** — you must be a tolerant reader, or the server can never add a field. That asymmetry is exactly the API-track rule, now enforced in code.
 
 ---
 
@@ -214,9 +214,9 @@ if (r.ok) r.value.money.amountMinor;     // ✅ fully typed AND verified
 ```
 
 Three decisions in that function worth defending:
-1. **Errors are parsed separately** — the error body is `problem+json`, not the success shape ([API L10](../../API/02-rest-design/10-errors-and-problem-details.md)).
+1. **Errors are parsed separately** — the error body is `problem+json`, not the success shape ([API L10](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/10-errors-and-problem-details.md)).
 2. **A schema mismatch is logged and becomes a 502**, not a crash. The server broke its contract; you degrade rather than white-screen.
-3. **`x-request-id` is captured** so a user-facing error can carry it — the support workflow from [API Lesson 20](../../API/04-production/20-observability.md).
+3. **`x-request-id` is captured** so a user-facing error can carry it — the support workflow from [API Lesson 20](https://github.com/Pawar-Pratik/API-mastery/blob/main/04-production/20-observability.md).
 
 > **Should you validate responses in production?** The honest answer to give: *"yes for third-party APIs, always. For my own API, I'd validate in development and staging so contract drift is caught immediately, and consider sampling in production if payloads are large — but the cost is usually negligible next to the network round trip, and the diagnostic value when the contract breaks is high."* Nuance beats dogma here.
 
@@ -268,7 +268,7 @@ openapi.yaml  ──┬──> server: express-openapi-validator (request + resp
                 └──> client: generated types + Zod schemas + typed fetch client
 ```
 
-**One contract, both sides, no drift.** A breaking change in the spec becomes a client compile error ([API L25](../../API/06-craft/25-openapi-contract-first.md)) — which is the whole point of contract-first development, and a genuinely strong thing to describe in an interview.
+**One contract, both sides, no drift.** A breaking change in the spec becomes a client compile error ([API L25](https://github.com/Pawar-Pratik/API-mastery/blob/main/06-craft/25-openapi-contract-first.md)) — which is the whole point of contract-first development, and a genuinely strong thing to describe in an interview.
 
 The reverse direction also exists and is worth knowing: define Zod schemas as the source of truth and generate OpenAPI from them (`@asteasolutions/zod-to-openapi`, or tRPC/Hono with OpenAPI output). Choose based on who owns the contract — **if consumers outside your repo depend on it, the spec should be the source; if it's a first-party app, schemas-first is faster.**
 
@@ -303,7 +303,7 @@ The reverse direction also exists and is worth knowing: define Zod schemas as th
 | **`.strict()` on requests you receive; default strip on responses you consume** | Strict in, tolerant out — the API-track asymmetry |
 | **`discriminatedUnion` over `union` when there's a discriminant** | Faster, and vastly better error messages |
 | **Parse `localStorage`; discard on mismatch** | Old versions of your own code wrote that data |
-| **Map validation errors to your API error contract, with field paths** | [API L10](../../API/02-rest-design/10-errors-and-problem-details.md) — clients need `field` + `code` |
+| **Map validation errors to your API error contract, with field paths** | [API L10](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/10-errors-and-problem-details.md) — clients need `field` + `code` |
 | **Keep schemas next to the domain type they describe** | One file, one concept |
 | **Generate schemas from OpenAPI when the spec is the contract** | Closes the loop; breaking changes become compile errors |
 | **Consider Valibot for client bundles** | Zod is ~14 kB you may not need |

@@ -10,7 +10,7 @@
 
 > **A component's props are its API — so type them the way you'd design an API contract: precise, minimal, and impossible to call incorrectly.**
 
-That's [API Lesson 01](../../API/01-foundations/01-what-an-api-really-is.md) at component scale, and it's the frame that makes every decision below obvious.
+That's [API Lesson 01](https://github.com/Pawar-Pratik/API-mastery/blob/main/01-foundations/01-what-an-api-really-is.md) at component scale, and it's the frame that makes every decision below obvious.
 
 ---
 

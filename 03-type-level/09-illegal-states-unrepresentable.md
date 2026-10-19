@@ -119,7 +119,7 @@ capture(p);                            // ❌ not assignable — good
 if (p.status === "requires_capture") capture(p);   // ✅
 ```
 
-**This is the client-side mirror of the API's state machine** ([API Lesson 09](../../API/02-rest-design/09-writes-patch-and-bulk.md)): the server enforces transitions in a `WHERE` clause, the client enforces them in the type system. Same invariant, two layers, neither trusting the other.
+**This is the client-side mirror of the API's state machine** ([API Lesson 09](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/09-writes-patch-and-bulk.md)): the server enforces transitions in a `WHERE` clause, the client enforces them in the type system. Same invariant, two layers, neither trusting the other.
 
 ---
 
@@ -205,7 +205,7 @@ add(usd, usd);        // ✅
 add(usd, eur);        // ❌ Types of property 'currency' are incompatible
 ```
 
-**That last line is the lesson.** Adding USD to EUR is a financial correctness bug that no amount of testing reliably catches, and here it's a compile error. This is the type-system counterpart of [API Lesson 05](../../API/01-foundations/05-data-formats.md)'s money rules.
+**That last line is the lesson.** Adding USD to EUR is a financial correctness bug that no amount of testing reliably catches, and here it's a compile error. This is the type-system counterpart of [API Lesson 05](https://github.com/Pawar-Pratik/API-mastery/blob/main/01-foundations/05-data-formats.md)'s money rules.
 
 ---
 
@@ -240,7 +240,7 @@ else {
 }
 ```
 
-Note `retryable` on the error union — that's the `retryable` column from [API Lesson 10](../../API/02-rest-design/10-errors-and-problem-details.md)'s error table, encoded so the client *cannot* forget to branch on it.
+Note `retryable` on the error union — that's the `retryable` column from [API Lesson 10](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/10-errors-and-problem-details.md)'s error table, encoded so the client *cannot* forget to branch on it.
 
 ### Combinators worth having
 ```ts
@@ -268,7 +268,7 @@ export function tryCatch<T>(fn: () => T): Result<T, unknown> {
 
 **Do not `Result`-ify everything.** Threading `Result` through twelve layers is worse than a `try/catch` at the boundary. The rule: *"`Result` for failures that are part of the domain; exceptions for failures that mean the program is wrong."* Saying that shows judgement rather than dogma.
 
-> React's `useActionState`, TanStack Query's `{ data, error, status }`, and Rust's `Result` are all the same shape. You'll meet it again in [React Lesson 17](../../React/README.md).
+> React's `useActionState`, TanStack Query's `{ data, error, status }`, and Rust's `Result` are all the same shape. You'll meet it again in [React Lesson 17](https://github.com/Pawar-Pratik/React-mastery).
 
 ---
 

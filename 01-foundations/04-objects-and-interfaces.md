@@ -169,7 +169,7 @@ type UpdateCustomer = {
 ```ts
 const a2: A = { x: undefined };   // ❌ under the flag — `x?: number` means absent, not undefined
 ```
-This is the flag that makes "absent" and "explicitly undefined" genuinely different types — which is exactly the PATCH-semantics distinction from [API Lesson 09](../../API/02-rest-design/09-writes-patch-and-bulk.md).
+This is the flag that makes "absent" and "explicitly undefined" genuinely different types — which is exactly the PATCH-semantics distinction from [API Lesson 09](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/09-writes-patch-and-bulk.md).
 
 ### Detecting absence at runtime
 ```ts

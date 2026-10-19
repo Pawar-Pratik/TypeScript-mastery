@@ -187,7 +187,7 @@ const c: Options = {};                        // ✅ absent
 interface Options2 { timeout?: number | undefined }   // ✅ if you really mean both
 ```
 
-**Why this matters far more than it looks:** it's exactly the PATCH problem from [API Lesson 09](../../API/02-rest-design/09-writes-patch-and-bulk.md). "Field absent" means *don't change it*; "field is `null`/`undefined`" means *clear it*. Those are different operations, and without this flag TypeScript can't tell them apart — so a bug where a user can't clear their phone number becomes invisible to the compiler.
+**Why this matters far more than it looks:** it's exactly the PATCH problem from [API Lesson 09](https://github.com/Pawar-Pratik/API-mastery/blob/main/02-rest-design/09-writes-patch-and-bulk.md). "Field absent" means *don't change it*; "field is `null`/`undefined`" means *clear it*. Those are different operations, and without this flag TypeScript can't tell them apart — so a bug where a user can't clear their phone number becomes invisible to the compiler.
 
 ```ts
 // With the flag on, this distinction is expressible and enforced:

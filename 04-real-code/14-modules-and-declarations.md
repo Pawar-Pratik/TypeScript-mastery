@@ -293,7 +293,7 @@ declare global {
 export {};
 ```
 
-That `rawBody` field is a nice example of why augmentation matters: [API Lesson 23](../../API/05-beyond-rest/23-realtime-and-webhooks.md) requires verifying HMAC signatures against the **raw** bytes, so the middleware stashes them on the request — and the type system needs to know.
+That `rawBody` field is a nice example of why augmentation matters: [API Lesson 23](https://github.com/Pawar-Pratik/API-mastery/blob/main/05-beyond-rest/23-realtime-and-webhooks.md) requires verifying HMAC signatures against the **raw** bytes, so the middleware stashes them on the request — and the type system needs to know.
 
 ---
 

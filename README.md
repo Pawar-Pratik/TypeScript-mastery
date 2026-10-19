@@ -3,6 +3,9 @@
 > The goal is not "I can add type annotations."
 > The goal is: **you use the type system to make wrong code impossible to write** — and you can explain, mechanically, why any given error message appears.
 
+**Part of [The Legend Track](https://github.com/Pawar-Pratik/The-Legend-Track)** — the four-track path.
+Sibling tracks: [APIs & REST](https://github.com/Pawar-Pratik/API-mastery) · [React](https://github.com/Pawar-Pratik/React-mastery) · [Spring Boot](https://github.com/Pawar-Pratik/SpringBoot)
+
 ---
 
 ## Why most TypeScript knowledge is shallow
@@ -46,7 +49,7 @@ Internalise those five and TypeScript stops surprising you.
 
 ## The project
 
-You'll build the **shared type layer and API client for Ledger Console** — the typed contract between the Ledger API (from the [API track](https://github.com/Pawar-Pratik/API-mastery/blob/58596b23055865a9dcebe222531e87f317479d5b/README.md)) and the React dashboard (the [React track](https://github.com/Pawar-Pratik/React-mastery.git)).
+You'll build the **shared type layer and API client for Ledger Console** — the typed contract between the Ledger API (from the [API track](https://github.com/Pawar-Pratik/API-mastery)) and the React dashboard (the [React track](https://github.com/Pawar-Pratik/React-mastery)).
 
 That means: branded ID types the compiler can't confuse, a `Money` type that can't be added across currencies, a `Result` type that forces error handling, a discriminated union for every API state, a runtime-validated boundary with inferred types, and a fully-typed fetch client generated from OpenAPI.
 
