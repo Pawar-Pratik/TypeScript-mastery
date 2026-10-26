@@ -409,10 +409,10 @@ A promise nobody awaits or catches. In Node 15+ an unhandled rejection **termina
 Three round trips instead of one. `Promise.all` them. It's one of the most common real performance bugs in application code and it's invisible unless you look for it.
 
 **Q8. "How do you cancel an in-flight request?"**
-`AbortSignal` — `AbortSignal.timeout(ms)` for timeouts, `AbortSignal.any([...])` to combine, and `signal.throwIfAborted()` in loops. Pass a signal through every async API you write. It's also what React's effect cleanup uses to prevent stale-response race conditions.
+`AbortSignal` — `AbortSignal.timeout(ms)` for timeouts, `AbortSignal.any([...])` to combine, and `signal.throwIfAborted()` in loops. Pass a signal through every async API you write. It's also what React's effect cleanup uses to prevent stale-response race conditions. (The runtime side, meaning which Node APIs accept a signal and how to abort work when the HTTP client disconnects, is [Node L10](https://github.com/Pawar-Pratik/Node-mastery/blob/main/02-event-loop/10-cancellation-and-concurrency.md).)
 
 **Q9. "How would you iterate 4 million paginated records without loading them all?"**
-An `async function*` that fetches a page, `yield*`s the items, and follows the cursor — consumed with `for await`. Bounded memory, and the caller never handles a cursor. It's the client half of cursor pagination.
+An `async function*` that fetches a page, `yield*`s the items, and follows the cursor — consumed with `for await`. Bounded memory, and the caller never handles a cursor. It's the client half of cursor pagination. The server half (streaming 4M rows out of Postgres in constant memory) is [Node L13](https://github.com/Pawar-Pratik/Node-mastery/blob/main/03-data-and-io/13-streams-and-backpressure.md).
 
 **Q10. "Why does `Awaited<T>` exist?"**
 Because promises auto-flatten: `Promise<Promise<T>>` doesn't exist at runtime. `Awaited` models that recursive unwrapping, so `Awaited<ReturnType<typeof asyncFn>>` gives you the actual value type.

@@ -32,6 +32,7 @@
 | **swc** | Transpile (Rust) | Similar; used by Next.js, Jest via `@swc/jest` |
 | **Vite** | Dev server + build (esbuild + Rollup) | The front-end default |
 | **tsx / tsup** | Run/build TS in Node | esbuild-based |
+| **Node itself** (24+) | Runs `.ts` directly by stripping types | No build step at all. **Erasable syntax only** (`erasableSyntaxOnly`), no checking, ignores `tsconfig` ([Lesson 02](../01-foundations/02-tsconfig-deeply.md)) |
 | **Babel** | Transpile with plugins | Legacy for TS; still used for specific transforms |
 
 **The consequence to internalise (and it catches everyone once):** your dev server happily runs code with type errors, because esbuild never looks at types. So:
@@ -235,7 +236,7 @@ Vitest uses Vite/esbuild, so it **doesn't type-check your tests by default** —
 | **Vitest** | esbuild; instant; optional type-check mode. **Default choice** |
 | **Jest + `@swc/jest`** | Fast transpile, no checking |
 | **Jest + `ts-jest`** | Type-checks during tests — slow, but catches errors |
-| **`node --test` + `tsx`** | Zero-config, no framework |
+| **`node --test`** | Zero-config, no framework. On Node 24+ it runs erasable `.ts` test files natively; add `tsx` only if you need non-erasable syntax ([Node L31](https://github.com/Pawar-Pratik/Node-mastery/blob/main/08-shipping/31-testing-node.md)) |
 
 And run `tsc --noEmit` over your test files in CI regardless, so tests aren't a type-checking blind spot.
 

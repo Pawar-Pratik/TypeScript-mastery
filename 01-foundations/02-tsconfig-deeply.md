@@ -219,6 +219,27 @@ import { db } from "./lib/db.js";     // ← .js, not .ts. Surprises everyone on
 ```
 The reason: the emitted JavaScript imports a `.js` file, and TypeScript doesn't rewrite specifiers. It's the correct behaviour and it feels wrong the first time.
 
+### When Node runs the `.ts` itself
+
+Node 24 runs TypeScript files directly: `node src/main.ts`, no build step ([Lesson 01](01-why-typescript-and-erasure.md) explains how). Now there is no emitted `.js` file, so the specifier must name the file Node actually loads, which is the `.ts`:
+
+```jsonc
+// A Node service that Node runs directly: tsc only checks, never emits
+{ "compilerOptions": {
+    "module": "NodeNext", "moduleResolution": "NodeNext",
+    "noEmit": true,
+    "allowImportingTsExtensions": true,     // permits "./db.ts" (only legal with noEmit / emitDeclarationOnly)
+    "erasableSyntaxOnly": true              // TS 5.8: enums, parameter properties, value namespaces → errors
+}}
+```
+```ts
+import { db } from "./lib/db.ts";     // ← .ts this time: there's no .js to point at
+```
+
+**`erasableSyntaxOnly`** is the flag that keeps you honest. Node *strips* types, replacing them with whitespace, so it can't run anything that needs code generated. With the flag on, `tsc` rejects exactly that set, and you find out in the editor rather than from a runtime `ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX`.
+
+If the same sources must *also* be compiled to JavaScript (a published package, say), **`rewriteRelativeImportExtensions`** (TS 5.7) rewrites `./db.ts` to `./db.js` in the output, so one set of imports serves both. Libraries still ship `.js`: Node refuses to strip types inside `node_modules`. The [Node.js track](https://github.com/Pawar-Pratik/Node-mastery) is written entirely in this run-it-directly style.
+
 ### The three interop flags
 
 **`esModuleInterop: true`** — makes `import express from "express"` work with CommonJS modules by emitting the correct interop helpers. **Always on.** Without it you need `import * as express`, which is technically wrong for a callable export.
@@ -290,6 +311,14 @@ Including `DOM` in a Node project is a small but real mistake: `document`, `wind
     "esModuleInterop": true, "skipLibCheck": true, "verbatimModuleSyntax": true,
     "outDir": "dist", "rootDir": "src", "sourceMap": true, "noEmitOnError": true }}
 
+// ── Node service run directly by Node 24+ (Ledger Engine: no build step) ──
+{ "compilerOptions": {
+    "target": "ESNext", "lib": ["ESNext"], "types": ["node"],
+    "module": "NodeNext", "moduleResolution": "NodeNext",
+    "noEmit": true, "allowImportingTsExtensions": true, "erasableSyntaxOnly": true,
+    "strict": true, "noUncheckedIndexedAccess": true, "exactOptionalPropertyTypes": true,
+    "verbatimModuleSyntax": true, "skipLibCheck": true }}
+
 // ── React app (Ledger Console) ──
 { "compilerOptions": {
     "target": "ES2022", "lib": ["ES2022", "DOM", "DOM.Iterable"],
@@ -326,6 +355,7 @@ Including `DOM` in a Node project is a small but real mistake: `document`, `wind
 | **`lib` must match your real runtime** | It's a promise, not a polyfill |
 | **No `DOM` lib in a Node project** | Or you'll use browser globals that don't exist |
 | **`isolatedModules` + `verbatimModuleSyntax` if you use a bundler** | Prevents constructs your transpiler can't handle |
+| **`erasableSyntaxOnly` whenever Node runs your `.ts` directly** | Node strips types and can't generate code for enums or parameter properties. Catch them in `tsc`, not at runtime |
 | **`skipLibCheck: true` in apps, `false` in one CI job for libraries** | You can't fix others' types; you must fix your own |
 | **Unused-variable rules in ESLint, not `tsc`** | So a mid-edit variable doesn't fail your build |
 | **One `tsconfig` per package; a root solution file with `references`** | Independent, cacheable checks |
@@ -355,6 +385,7 @@ Yes for applications: you can't fix third-party `.d.ts` files, conflicting `@typ
 
 **Q7. "Why do I need `.js` extensions in my TypeScript imports?"**
 With `module: NodeNext` and ESM, TypeScript doesn't rewrite specifiers — the emitted JS imports exactly what you wrote, and Node ESM requires extensions. So you write the extension of the *output* file. Correct, and counter-intuitive.
+**Follow-up:** *"And if Node runs the `.ts` directly?"* Then there's no output file: import `./db.ts` with `allowImportingTsExtensions` + `noEmit`, or use `rewriteRelativeImportExtensions` (TS 5.7) if you also emit JavaScript.
 
 **Q8. "What's `isolatedModules` for?"**
 It forbids constructs that can't be transpiled one file at a time — required by esbuild/swc/Vite, which have no cross-file type information. The classic offender is re-exporting a type without `export type`.
@@ -364,6 +395,9 @@ Not via `tsconfig` — there's no flag. ESLint: `@typescript-eslint/no-explicit-
 
 **Q10. "How would you introduce strict mode into a large existing codebase?"**
 Not all at once. Per-flag, per-directory, with a ratchet: enable one flag, fix or `// @ts-expect-error` the failures, lock it in CI, repeat. `strictNullChecks` last, because it's the biggest. Full strategy in [Lesson 19](../05-ecosystem/19-migration-and-strictness.md).
+
+**Q11. "Node can run TypeScript now. Why does `erasableSyntaxOnly` exist?"**
+Because Node doesn't compile TypeScript; it *erases* it, swapping type syntax for whitespace and running the rest unchecked. Anything that must generate code (`enum`, `constructor(private x: X)`, a `namespace` with values) can't be erased, so plain type stripping rejects it at runtime. `erasableSyntaxOnly` (TS 5.8) moves that failure into `tsc`. The weak answer is "it disables enums"; the strong answer explains that the flag encodes the boundary between *erasable* and *emitting* TypeScript, which is exactly the boundary Node's runtime draws.
 
 ---
 
