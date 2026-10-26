@@ -3,8 +3,8 @@
 > The goal is not "I can add type annotations."
 > The goal is: **you use the type system to make wrong code impossible to write** — and you can explain, mechanically, why any given error message appears.
 
-**Part of [The Legend Track](https://github.com/Pawar-Pratik/The-Legend-Track)** — the four-track path.
-Sibling tracks: [APIs & REST](https://github.com/Pawar-Pratik/API-mastery) · [React](https://github.com/Pawar-Pratik/React-mastery) · [Spring Boot](https://github.com/Pawar-Pratik/SpringBoot)
+**Part of [The Legend Track](https://github.com/Pawar-Pratik/The-Legend-Track)** — the five-track path.
+Sibling tracks: [APIs & REST](https://github.com/Pawar-Pratik/API-mastery) · [Node.js](https://github.com/Pawar-Pratik/Node-mastery) · [React](https://github.com/Pawar-Pratik/React-mastery) · [Spring Boot](https://github.com/Pawar-Pratik/SpringBoot)
 
 ---
 
@@ -53,7 +53,7 @@ You'll build the **shared type layer and API client for Ledger Console** — the
 
 That means: branded ID types the compiler can't confuse, a `Money` type that can't be added across currencies, a `Result` type that forces error handling, a discriminated union for every API state, a runtime-validated boundary with inferred types, and a fully-typed fetch client generated from OpenAPI.
 
-**Why this and not exercises:** it's the layer that makes the React track pleasant, and it forces every type-level technique for a real reason.
+**Why this and not exercises:** it's the layer that makes the React track pleasant, and it forces every type-level technique for a real reason. The [Node.js track](https://github.com/Pawar-Pratik/Node-mastery) reuses it too: the same branded IDs, `Money` and `Result` types ship inside its published `@ledger/node` SDK.
 
 ---
 
@@ -61,10 +61,10 @@ That means: branded ID types the compiler can't confuse, a `Money` type that can
 
 | Tool | Notes |
 |---|---|
-| **Node 20+** | |
-| **TypeScript 5.x** | `npm i -D typescript`. Always use the project's version, never a global one |
+| **Node 24 LTS or newer** | Node 20 reached end-of-life in April 2026. Node 24 runs `.ts` files directly by stripping types ([Lesson 01](01-foundations/01-why-typescript-and-erasure.md)) |
+| **TypeScript 5.8+** | `npm i -D typescript`. Always use the project's version, never a global one. 5.8 adds `erasableSyntaxOnly`, which matters as soon as Node runs your code ([Lesson 02](01-foundations/02-tsconfig-deeply.md)) |
 | **VS Code** | Set **"Use Workspace Version"** for TypeScript (bottom-right of any `.ts` file). Version mismatches between the editor and the build are a real source of confusion |
-| **`tsx`** | `npm i -D tsx` — run `.ts` directly during learning |
+| **`tsx`** | `npm i -D tsx` — run `.ts` directly during learning, including the non-erasable syntax (enums, parameter properties) that plain `node file.ts` refuses |
 | **The TypeScript Playground** | [typescriptlang.org/play](https://www.typescriptlang.org/play) — **use it constantly.** Hover to see inferred types; that hover is the primary learning tool in this track |
 | **`ts-reset`** *(optional, later)* | Fixes some standard-library type looseness. Lesson 19 |
 

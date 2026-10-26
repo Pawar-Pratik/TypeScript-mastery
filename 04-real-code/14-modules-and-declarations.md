@@ -38,7 +38,8 @@ For `import { x } from "some-lib"`, with `moduleResolution: "NodeNext"` or `"Bun
 ```
 1. Is it a relative path? ("./foo")
    → look for ./foo.ts, ./foo.tsx, ./foo.d.ts, ./foo/index.ts …
-     (NodeNext + ESM: you must write ./foo.js — the OUTPUT name)
+     (NodeNext + ESM: you must write ./foo.js — the OUTPUT name;
+      or ./foo.ts when Node runs the source directly — Lesson 02)
 
 2. Is there a `paths` mapping in tsconfig? → apply it
 
@@ -255,6 +256,8 @@ If you publish anything to npm:
 | Avoid `declare global` in a library | You're polluting every consumer's global scope |
 
 `attw` (arethetypeswrong) deserves the callout: the CJS/ESM types story has several failure modes that only appear in consumer projects, and it's the tool that finds them.
+
+**Dual, or ESM-only?** The dual layout above is the cautious default, and it costs you two builds plus the *dual-package hazard*: a consumer can load both copies, so `instanceof` and singletons quietly break. Every supported Node line (22.12+, 24, 26) can now `require()` an ES module, so a new library can ship **ESM-only** and drop the `.cjs` build. The one exception is an ESM graph that uses top-level await, which `require()` refuses. The runtime side of that decision is in the Node track: [module loading](https://github.com/Pawar-Pratik/Node-mastery/blob/main/01-foundations/04-modules-cjs-and-esm.md) and [publishing](https://github.com/Pawar-Pratik/Node-mastery/blob/main/08-shipping/32-packaging-and-publishing.md).
 
 ---
 

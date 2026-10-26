@@ -16,7 +16,8 @@
 
 ```ts
 class PaymentService {
-  // Parameter properties — declare and assign in one step
+  // Parameter properties — declare and assign in one step.
+  // ⚠️ Not erasable: they emit `this.db = db`. See "Erasable classes" below.
   constructor(
     private readonly db: Database,
     private readonly processor: Processor,
@@ -45,6 +46,21 @@ class PaymentService {
   private process(event: WebhookEvent): void { /* ... */ }
 }
 ```
+
+### Erasable classes
+Parameter properties are one of the few TypeScript features that **emit code** (`this.db = db`). Node 24 runs `.ts` files by *stripping* types, so it rejects them, and a codebase that Node runs directly turns on `erasableSyntaxOnly` ([Lesson 02](../01-foundations/02-tsconfig-deeply.md)) to catch them at compile time. The erasable version is the long form, and it's the same JavaScript either way:
+
+```ts
+class PaymentService {
+  readonly #db: Database;              // or `private readonly db: Database;`
+  readonly #processor: Processor;
+  constructor(db: Database, processor: Processor) {
+    this.#db = db;
+    this.#processor = processor;
+  }
+}
+```
+`private`, `readonly`, `abstract`, `implements` and `override` are pure type syntax and erase cleanly. `#private` is real JavaScript. Only the parameter-property shorthand has to go. The [Node.js track](https://github.com/Pawar-Pratik/Node-mastery) writes every class this way.
 
 ### `private` vs `#private` — a genuine difference
 

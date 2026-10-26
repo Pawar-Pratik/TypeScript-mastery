@@ -79,7 +79,21 @@ var Status;                                // ← enum survived!
 
 **Gone entirely:** `interface`, `type`, all annotations, all generics, `as`, `satisfies`, `readonly`, `private`, `implements`, non-null `!`.
 
-**Survives, because it generates real code:** `enum` (a runtime object), `class` (a real JS class), and parameter default values.
+**Survives, because it generates real code:** `enum` (a runtime object), parameter properties (`constructor(public id: string)` emits `this.id = id`), a `namespace` with values, `class` (a real JS class), and parameter default values.
+
+### Node runs TypeScript by erasing it
+
+The cleanest proof that types are erased is Node itself. Since Node 23.6 (and 22.18), `node app.ts` just works, and type stripping is **stable from Node 24.12**. Node doesn't compile anything: it **replaces the type syntax with whitespace and runs what's left**. Line and column numbers stay exact because nothing moved, and nothing is type-checked.
+
+That makes the "survives" list above exactly the list plain Node can't run. An `enum`, a parameter property or a value `namespace` needs code *generated*, not erased, so Node stops with `ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX`. (`--experimental-transform-types` exists, but that's a transpiler again.) TypeScript 5.8 added a flag that makes `tsc` enforce the same boundary, so you find out in the editor:
+
+```jsonc
+{ "compilerOptions": { "erasableSyntaxOnly": true } }   // enum / parameter properties / value namespaces → compile errors
+```
+
+Two consequences, and they are this lesson in miniature:
+- **A `.ts` file with type errors runs fine under Node.** Nothing checked it. `tsc --noEmit` in CI is still your type checker.
+- **Erasure isn't only a mental model any more.** It's literally how the runtime executes your file. The [Node.js track](https://github.com/Pawar-Pratik/Node-mastery) is written entirely in this style, and [Lesson 02](02-tsconfig-deeply.md) covers the config.
 
 ### What this means, concretely
 
@@ -263,7 +277,7 @@ Because esbuild/swc/Babel **strip** types without checking them — that's why t
 No — the emitted JavaScript is the same, modulo `enum` and downlevelling. The *build* is slower. The one real runtime cost is if you target old JavaScript and TS emits polyfills/helpers (e.g. downlevelled `async/await` becomes a state machine).
 
 **Q8. "TypeScript or JSDoc-typed JavaScript?"**
-A good question because it tests whether you know the same checker powers both. `// @ts-check` plus JSDoc gives you real type checking with **no build step** — genuinely right for small libraries and Node scripts, and the reason some projects (notably Svelte, which moved off `.ts` files) chose it. TypeScript syntax wins for expressiveness and ergonomics at scale. **Node's native type-stripping** (20+ with a flag, on by default in 23+) narrows the gap further by removing the build step for plain annotations.
+A good question because it tests whether you know the same checker powers both. `// @ts-check` plus JSDoc gives you real type checking with **no build step** — genuinely right for small libraries and Node scripts, and the reason some projects (notably Svelte, which moved off `.ts` files) chose it. TypeScript syntax wins for expressiveness and ergonomics at scale. **Node's native type stripping** (behind a flag from 22.6, on by default since 23.6 and 22.18, stable since 24.12) narrows the gap further by removing the build step for erasable TypeScript.
 
 ---
 
@@ -280,6 +294,8 @@ npx tsc src/erasure.ts --outDir dist --target ES2022 --module ESNext
 cat dist/erasure.js
 ```
 **Diff them side by side.** Note exactly what disappeared and what didn't. This 5-minute exercise removes 80% of future confusion about TypeScript.
+
+Then let Node do the erasing: `node src/erasure.ts` (Node 24+). It stops at the `enum`, because an enum has to be generated and Node can only erase. Delete the enum, add a deliberate type error such as `const n: number = "x"`, and run it again. **It runs.** Nothing checked it.
 
 ### Break — five experiments, all of which "compile fine"
 ```ts

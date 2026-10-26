@@ -351,6 +351,8 @@ type Status5 = typeof STATUS[keyof typeof STATUS];   // "pending" | "succeeded"
 1. **It emits runtime code**, which makes it the only "type" that isn't erased — surprising, and it defeats tree-shaking.
 2. **It's nominally typed**, uniquely in TypeScript. You cannot pass `"pending"` where `Status.Pending` is expected; you must import the enum. That's friction at every call site and every JSON boundary — and it means your API's string values and your internal enum can silently diverge.
 
+And a newer, third argument: **Node can't run it.** Node 24 executes `.ts` files by stripping the types, and an enum has to be generated, not stripped, so `node file.ts` rejects it. Codebases that Node runs directly turn on `erasableSyntaxOnly` ([Lesson 02](02-tsconfig-deeply.md)), which makes every `enum` a compile error. The union and the `as const` object both pass that flag untouched.
+
 > **The answer to give:** *"Union of string literals by default — zero runtime cost, and the values are just strings so they cross the JSON boundary cleanly. An `as const` object when I also need to iterate the values at runtime. `enum` only when a framework requires it, because it's the one TypeScript construct that isn't erased and the one place TypeScript is nominally typed."*
 
 ---
